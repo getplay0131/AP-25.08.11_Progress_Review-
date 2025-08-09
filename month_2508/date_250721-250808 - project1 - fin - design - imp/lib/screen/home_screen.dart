@@ -33,7 +33,6 @@ import 'package:flutter/material.dart';
 // TODO : 일정 상세보기 데이터 전달 문제 발견 ! > 리딩 버튼을 3가지 모드 순환하도록 개선 및 상세보기 화면으로 데이터 전달하도록 수정
 // 25-08-08 할일!
 // TODO : 일정 상세보기 데이터 전달 문제 발견 ! > 해당 스케줄을 전달할수 있도록 수정하기 > 완료! 버튼 수정하기!
-import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -42,26 +41,28 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-enum ScheduleMode { add, edit, delete, view }
+enum ScheduleMode { add, edit, delete, view } // 안전성 위해 이넘 클래스 사용
 
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic> schedule = {
+    // 기본 일정 데이터
     "title": "일정 1",
     "date": DateTime.now(),
     "description": "일정 1 설명",
     "location": "장소 1",
     "isCompleted": false,
   };
-  List<Map<String, dynamic>> scheduleList = [];
+  List<Map<String, dynamic>> scheduleList = []; // 일정을 저장할 리스트
 
-  String currentMode = "";
+  String currentMode = ""; // 현재 모드를 스트링 값으로 저장
   bool switchToEditMode = false;
   bool switchToDeleteMode = false;
   bool switchToAddMode = false;
   bool switchToViewMode = false;
-  int selectedIndex = 0;
+  int selectedIndex = 0; // 선택된 인덱스
 
   void _checkCurrentMode() {
+    // 현재 모드 확인 함수
     print("===== 현재 모드 확인 =====");
     print("현재 모드: $currentMode");
     print("추가 모드: $switchToAddMode");
@@ -70,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print("상세 보기 모드: $switchToViewMode");
   }
 
+  // 모드에 따라 불리언 플래그 활성화 및 관리
   void _enableToMode(ScheduleMode Mode) {
     print("===== _enableToMode called =====");
     print("모드 전환 시작! 현재 모드: $Mode");
@@ -114,15 +116,28 @@ class _HomeScreenState extends State<HomeScreen> {
     print("모드 전환 완료! 현재 모드: $Mode");
     _checkCurrentMode();
     print("===== _enableToMode end =====");
-    _switchToMode();
+    _switchToMode(); // 불리언 플래그 활성화 함수 호출
   }
 
+  //
   void _switchToMode() {
     print("===== switchToMode called =====");
     setState(() {
-      // 디자인만 개선, 로직 유지
+      if (switchToAddMode) {
+        currentMode = ScheduleMode.add.name;
+        print("현재 모드는 추가 모드 입니다!");
+      } else if (switchToEditMode) {
+        currentMode = ScheduleMode.edit.name;
+        print("현재 모드는 수정 모드 입니다!");
+      } else if (switchToDeleteMode) {
+        currentMode = ScheduleMode.delete.name;
+        print("현재 모드는 삭제 모드 입니다!");
+      } else if (switchToViewMode) {
+        currentMode = ScheduleMode.view.name;
+        print("현재 모드는 상세 보기 모드 입니다!");
+      }
     });
-    _checkCurrentMode();
+    _checkCurrentMode(); // 현재 모드 확인 함수 호출
     print("모드 전환 완료! 현재 모드: $currentMode");
     print("===== switchToMode end =====");
   }

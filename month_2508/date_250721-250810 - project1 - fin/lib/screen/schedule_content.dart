@@ -107,15 +107,6 @@ class _ScheduleContentState extends State<ScheduleContent> {
                     ScaffoldMessenger.of(
                       context,
                     ).showSnackBar(SnackBar(content: Text("일정 저장 버튼이 눌렸습니다!")));
-                    // setState(() {
-                    //   scheduleData = {
-                    //     'title': title,
-                    //     'date': date.toIso8601String(),
-                    //     'description': description,
-                    //     'location': location,
-                    //     'isCompleted': isCompleted,
-                    //   };
-                    // });
                     saveToData();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(

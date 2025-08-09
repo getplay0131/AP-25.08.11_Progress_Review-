@@ -196,7 +196,7 @@ void main() {
   runApp(
     MaterialApp(
       home: HomeScreen(),
-      initialRoute: '/',
+      initialRoute: '/', // 홈을 지정하고나 이니셜 루트로 지정하거나 둘중 한가지만 해야한다.
       routes: {
         // "/": (context) => HomeScreen(),
         "/home_screen": (context) => HomeScreen(),

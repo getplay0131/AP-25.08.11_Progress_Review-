@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "location": "장소 1",
     "isCompleted": false,
   };
-  List<Map<String, dynamic>> scheduleList = [];
+  List<Map<String, dynamic>> scheduleList = []; // 일정 데이터를 저장할 리스트
 
   String currentMode =
       ""; // add > 일정 추가 모드, edit > 일정 수정 모드, delete > 일정 삭제 모드,
@@ -129,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _switchToMode();
   }
 
+  // 커런트 모드에 모드 값 입력
   void _switchToMode() {
     print("===== switchToMode called =====");
     setState(() {
@@ -151,9 +152,11 @@ class _HomeScreenState extends State<HomeScreen> {
     print("===== switchToMode end =====");
   }
 
+  // 해당 모드로 전환하는 함수
   void _changeToTargetMode({int? idx = 0}) {
     print("===== changeToTargetMode called =====");
     if (idx == null) {
+      // 선택된 인덱스가 null인 경우
       print("선택된 인덱스가 null입니다. 기본값 0으로 설정합니다.");
     } else {
       setState(() {
@@ -209,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print("잘못된 모드가 선택되었습니다!");
       _resetMode(); // 모드 초기화
     }
-    _resetMode();
+    _resetMode(); // 모드 초기화 함수 호출 > 안정성 위해 모드 초기화
     _checkCurrentMode(); // 현재 모드 확인 함수 호출
     print("===== changeToTargetMode end =====");
   }
@@ -226,6 +229,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // 화면 생성시 호출되는 메서드
+  // 위젯이 처음 생성될 때 호출되며, 상태를 초기화하는 데 사용됩니다.
+  // 이 메서드는 위젯이 처음 빌드될 때 호출되며, 상태를 초기화하는 데 사용됩니다.
+  // 위젯이 처음 생성될 때 호출되며, 상태를 초기화하는 데 사용됩니다.
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -239,6 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _printCurrentData(); // 데이터 출력 함수 호출
   }
 
+  // 디버깅용 메서드
   void _printCurrentData() {
     print("===== home screen loading data =====");
     print("title: ${schedule["title"]}");
@@ -251,6 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print("========================================");
   }
 
+  // 현재 데이터 확인
   void _checkCurrentData() {
     print("===== home screen check data =====");
     print("title: ${schedule["title"]}");
@@ -262,6 +271,10 @@ class _HomeScreenState extends State<HomeScreen> {
     print("selectedIndex: $selectedIndex");
     print("========================================");
   }
+
+  // 스테이트 초기화 메서드
+  // 화면이 생성될 때 한 번만 호출되며, 위젯이 처음 생성될 때 실행됩니다.
+  // 이 메서드는 위젯이 처음 빌드될 때 호출되며, 상태를 초기화하는 데 사용됩니다.
 
   @override
   void initState() {
@@ -281,10 +294,12 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // 모드 초기화 버튼
   Widget _modeResetBtn() {
     return ElevatedButton(
       onPressed: () async {
         final confirm = await showDialog<bool>(
+          // 다이얼로그로 확인 받기
           context: context,
           builder: (context) => AlertDialog(
             title: Text("모드 초기화 하기!"),
@@ -302,6 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
         if (confirm == true) {
+          // 확인 버튼을 누른 경우
           _resetMode();
           ScaffoldMessenger.of(
             context,
@@ -313,11 +329,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // 모든 일정 데이터 삭제 버튼
   Widget _deleteAllScheduleData() {
     // 현재 모드에 따라 버튼을 표시
     return ElevatedButton(
       onPressed: () async {
         final confirm = await showDialog<bool>(
+          // 다이얼로그로 확인 받기
           context: context,
           builder: (context) => AlertDialog(
             title: Text("일정 데이터 삭제"),
@@ -335,6 +353,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
         if (confirm == true) {
+          // 확인 버튼을 누른 경우
           setState(() {
             scheduleList.clear(); // 모든 일정 데이터 삭제
           });
@@ -351,10 +370,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 수정 모드와 삭제 모드 토글 함수
+  // 모드 토글 함수
   void _toggleMode() {
-    //   현재 모드 확인
-    //   수정 모드 일때는 true, 삭제 모드 일때는 false로 반환
     //   그 과정에서 해당 모드 활성화와 비활성화 상태를 변경함
     print("===== __toggleMode called =====");
     setState(() {
@@ -401,14 +418,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return ElevatedButton(
       onPressed: () {
-        // 3가지 모드 순환: 수정 → 삭제 → 상세보기 → 수정
-        // if (switchToEditMode) {
-        //   _enableToMode(ScheduleMode.delete);
-        // } else if (switchToDeleteMode) {
-        //   _enableToMode(ScheduleMode.view);
-        // } else {
-        //   _enableToMode(ScheduleMode.edit);
-        // }
         _toggleMode();
       },
       child: Text(buttonText, style: TextStyle(color: Colors.white)),
@@ -433,6 +442,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // 일정 추가 화면으로 이동하는 메서드
   Future<void> _MoveToAddScheduleScreenOnlyDataTransmission({
     Map<String, dynamic>? schedule,
     int? idx,
@@ -441,6 +451,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // 메서드 시작 구분선
     print("===== _MoveToAddScheduleScreenOnlyDataTransmission called =====");
     schedule ??= {
+      // 널일때를 대비해 기본값 설정
       "title": "새로운 일정",
       "date": DateTime.now(),
       "description": "일정 설명",
@@ -469,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen> {
         '/schedule_add',
         arguments: {
           "mode": mode, // 애드 모드임을 알리기 위한 인자
-          "index": idx, // 현재 인덱스 전달
+          "selectedIndex": idx, // 현재 인덱스 전달
           "data": schedule, // 현재 일정 데이터 전달
         },
       );
@@ -495,7 +506,7 @@ class _HomeScreenState extends State<HomeScreen> {
         '/schedule_add',
         arguments: {
           "mode": mode, // 애드 모드임을 알리기 위한 인자
-          "index": idx, // 현재 인덱스 전달
+          "selectedIndex": idx, // 현재 인덱스 전달
           "data": scheduleList[selectedIndex], // 현재 일정 데이터 전달
         },
       );
@@ -519,6 +530,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print("===== _MoveToAddScheduleScreenOnlyDataTransmission end =====");
   }
 
+  // 상세보기 화면으로 이동하는 메서드
   Future<void> _MoveToViewScheduleScreenOnlyDataTransmission({
     Map<String, dynamic>? schedule,
     int? idx,
@@ -534,7 +546,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "isCompleted": false,
     };
     idx ??= scheduleList.length; // 현재 인덱스는 리스트의 길이
-    mode ??= "view"; // 기본 모드는 "add"
+    mode ??= "view"; // 기본 모드는 "view"
     if (mode == "view") {
       ScaffoldMessenger.of(
         context,
@@ -546,7 +558,7 @@ class _HomeScreenState extends State<HomeScreen> {
         '/schedule_content',
         arguments: {
           "mode": mode, // 상세 보기 모드임을 알리기 위한 인자
-          "index": idx, // 현재 인덱스 전달
+          "selectedIndex": idx, // 현재 인덱스 전달
           "data": scheduleList[selectedIndex], // 현재 일정 데이터 전달
         },
       );
@@ -624,10 +636,12 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Expanded(
               child: ListView.builder(
+                // ListView.builder를 사용하여 동적으로 리스트 생성
                 itemCount: scheduleList.length,
                 itemBuilder: (context, idx) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     setState(() {
+                      // 위젯 트리 빌드 후 상태 변경
                       // 상태 변경
                       selectedIndex = idx; // 현재 선택된 인덱스 저장
                     });
@@ -636,6 +650,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   var schedule = scheduleList[idx];
                   // _addSchedule(schedule, idx);
                   return ListTile(
+                    // 각 일정 항목을 표시하는 ListTile 위젯
                     title: Text(schedule['title']),
                     subtitle: Text(
                       "${schedule['date'].toLocal()} - ${schedule['description']}",

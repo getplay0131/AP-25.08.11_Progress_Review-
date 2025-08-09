@@ -11,7 +11,8 @@ class ScheduleAdd extends StatefulWidget {
 }
 
 class _ScheduleAddState extends State<ScheduleAdd> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey =
+      GlobalKey<FormState>(); // 폼 키 선언 > 폼 위젯에 연결하여 유효성 검사 등을 수행할 수 있다.
 
   // 데이터 입력받기 위한 컨트롤러 선언 > 추후 텍스트필드에 연결 > 마지막에 디스포즈 필요
   late TextEditingController _titleController;
@@ -23,8 +24,6 @@ class _ScheduleAddState extends State<ScheduleAdd> {
   String description = "";
   String location = "";
   bool isCompleted = false;
-
-  // bool isEditMode = false; // false > 일정 추가 모드, true > 일정 수정 모드
 
   String currentMode = "add"; // 현재 모드 (추가 또는 수정)
   int _selectedIndex = 0; // 현재 선택된 인덱스
@@ -98,9 +97,11 @@ class _ScheduleAddState extends State<ScheduleAdd> {
     print("===== _initScheduleData end =====");
   }
 
+  // 날짜 선택을 위한 메소드
   Future<void> _showDatePicker(BuildContext context) async {
     DateTime tempPicked = date;
     await showModalBottomSheet(
+      // showModalBottomSheet를 사용하여 날짜 선택기 표시
       context: context,
       builder: (BuildContext builder) {
         return Container(
@@ -111,7 +112,7 @@ class _ScheduleAddState extends State<ScheduleAdd> {
                 height: 250,
                 child: CupertinoDatePicker(
                   initialDateTime: date,
-                  mode: CupertinoDatePickerMode.dateAndTime,
+                  mode: CupertinoDatePickerMode.dateAndTime, // 날짜와 시간 선택 모드
                   use24hFormat: true,
                   onDateTimeChanged: (DateTime newDate) {
                     tempPicked = newDate;
@@ -162,12 +163,14 @@ class _ScheduleAddState extends State<ScheduleAdd> {
       body: Column(
         children: [
           inputForm(
+            // 입력 폼 위젯
             titleController: _titleController,
             descriptionController: _descriptionController,
             locationController: _locationController,
           ),
-          _buildTimeSection(currentMode),
+          _buildTimeSection(currentMode), // 날짜/시간 선택 섹션
           Checkbox(
+            // 완료 여부 체크박스
             value: isCompleted,
             onChanged: (value) {
               // 체크박스 상태 변경 시 호출되는 콜백
@@ -177,7 +180,7 @@ class _ScheduleAddState extends State<ScheduleAdd> {
             },
           ),
           ElevatedButton(
-            onPressed: _collectAndValidateData,
+            onPressed: _collectAndValidateData, // 데이터 수집 및 유효성 검사 메소드 호출
             child: Text(currentMode == "edit" ? "일정 수정하기" : "일정 추가하기"),
           ),
           SizedBox(height: 20),
@@ -197,12 +200,13 @@ class _ScheduleAddState extends State<ScheduleAdd> {
     required TextEditingController locationController,
   }) {
     return Form(
-      key: _formKey,
+      key: _formKey, // 폼 위젯에 키를 연결하여 유효성 검사 등을 수행할 수 있다.
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextFormField(
+              // 제목 입력 필드
               controller: titleController,
               decoration: InputDecoration(labelText: "제목"),
               validator: (value) {
@@ -258,11 +262,13 @@ class _ScheduleAddState extends State<ScheduleAdd> {
     );
   }
 
+  // 데이터 수집 및 유효성 검사 메소드
   void _collectAndValidateData() {
     print("제목: ${_titleController.text.trim()}");
     print("설명: ${_descriptionController.text.trim()}");
     print("위치: ${_locationController.text.trim()}");
     if (_formKey.currentState!.validate()) {
+      // 폼 유효성 검사
       setState(() {
         title = _titleController.text.trim();
         description = _descriptionController.text.trim();
@@ -303,6 +309,7 @@ class _ScheduleAddState extends State<ScheduleAdd> {
     _locationController.clear();
   }
 
+  // 날짜/시간 선택 섹션 위젯
   Widget _buildTimeSection(String currentMode) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -321,6 +328,7 @@ class _ScheduleAddState extends State<ScheduleAdd> {
     );
   }
 
+  // 홈 화면으로 이동하면서 데이터 전송
   Future<void> _moveToHomeScheduleScreenOnlyDataTransmission({
     Map<String, dynamic>? schedule,
     int? idx,
@@ -329,6 +337,7 @@ class _ScheduleAddState extends State<ScheduleAdd> {
     print(
       "===== _moveToHomeScheduleScreenOnlyDataTransmission : checkData ===========",
     );
+    _checkCurrentDataForAddScreen();
     schedule ??= {
       "title": "새로운 일정",
       "date": DateTime.now(),
