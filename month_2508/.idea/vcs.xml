@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Review_Personal_Calendar_Management" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/date_250721-250808 - project1 - fin - design - imp" vcs="Git" />
   </component>
 </project>
