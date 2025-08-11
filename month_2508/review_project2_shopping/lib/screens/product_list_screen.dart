@@ -76,10 +76,22 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [Text('₩${item.price}'), Text('재고: ${item.stock}')],
               ),
+              onTap: () => navigateToProductContentScreen(productList, index),
             ),
           );
         },
       ),
+    );
+  }
+
+  //   method
+
+  // 프로덕트 상세 스크린으로 이동하는 네비게이터 함수
+  void navigateToProductContentScreen(List<product> products, int index) {
+    Navigator.pushNamed(
+      context,
+      '/productContent',
+      arguments: {'products': products[index], 'index': index},
     );
   }
 }
